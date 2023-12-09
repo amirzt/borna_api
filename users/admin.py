@@ -37,4 +37,4 @@ class StudentAdmin(admin.ModelAdmin):
     list_display = ('user', 'first_name', 'last_name', 'grade', 'field')
     list_filter = ('grade', 'field', 'city')
     search_fields = ('user__phone__startswith', 'first_name__startswith', 'last_name__startswith')
-    fields = ('user', 'first_name', 'last_name', 'student_code', 'grade', 'field', 'city')
+    fields = ('user', 'first_name', 'last_name', 'student_code', 'grade', 'field', 'city', 'invitation_code')

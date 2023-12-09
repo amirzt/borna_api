@@ -62,6 +62,12 @@ def get_student_code():
     return code
 
 
+def get_invitation_code():
+    chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'
+    code = get_random_string(length=8, allowed_chars=chars)
+    return code
+
+
 class Student(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, primary_key=True)
     first_name = models.CharField(max_length=50, null=True, blank=False)
@@ -71,6 +77,15 @@ class Student(models.Model):
     field = models.ForeignKey(Field, on_delete=models.CASCADE)
     city = models.ForeignKey(City, on_delete=models.CASCADE)
     student_code = models.CharField(max_length=20, null=False, blank=False, unique=True, default=get_student_code)
+    invitation_code = models.CharField(max_length=20, null=False, blank=False, unique=True, default=get_invitation_code)
 
     def __str__(self):
         return self.first_name + ' ' + self.last_name
+
+
+class Wallet(models.Model):
+    student = models.OneToOneField(Student, on_delete=models.CASCADE)
+    balance = models.IntegerField(default=0)
+
+    def __str__(self):
+        return self.student.first_name

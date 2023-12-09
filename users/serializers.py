@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from users.models import CustomUser, Grade, Field, City, Student
+from users.models import CustomUser, Grade, Field, City, Student, Wallet
 
 
 class CustomUserSerializer(serializers.ModelSerializer):
@@ -49,7 +49,17 @@ class StudentSerializer(serializers.ModelSerializer):
         if 'last_name' in self.validated_data:
             student.last_name = self.validated_data['last_name']
         student.save()
+
+        wallet = Wallet(student=student)
+        wallet.save()
+
         return student
+
+
+class WalletSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Wallet
+        fields = ['balance']
 
 
 class GetStudentInfoSerializer(serializers.ModelSerializer):
@@ -57,8 +67,13 @@ class GetStudentInfoSerializer(serializers.ModelSerializer):
     field = FieldSerializer()
     city = CitySerializer()
     user = CustomUserSerializer()
+    wallet = serializers.SerializerMethodField('get_wallet')
+
+    @staticmethod
+    def get_wallet(self):
+        return WalletSerializer(Wallet.objects.get(student=self)).data
 
     class Meta:
         model = Student
-        fields = ['first_name', 'last_name', 'grade', 'field', 'city', 'student_code', 'id', 'user']
-
+        fields = ['first_name', 'last_name', 'grade', 'field', 'city', 'student_code', 'id', 'user', 'wallet',
+                  'invitation_code']
