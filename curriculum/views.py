@@ -1,3 +1,4 @@
+from django.db.models import Sum
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -41,3 +42,19 @@ def delete_curriculum(request):
     item = CurriculumItem.objects.get(id=request.data['id'])
     item.delete()
     return Response({'message': 'deleted'})
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def get_time_by_date(request):
+    response = {}
+    items = CurriculumItem.objects.filter(student=Student.objects.get(user=request.user),
+                                          date__gte=request.data['start_date'],
+                                          date__lte=request.data['end_date'])
+    for item in items:
+        same_date = items.filter(
+            date=item.date)
+        response[item.date.strftime('%Y-%m-%d')] = same_date.aggregate(Sum('time'))
+    sums = sorted(response.items(), key=lambda x: x[0], reverse=False)
+    return Response(sums)
+
