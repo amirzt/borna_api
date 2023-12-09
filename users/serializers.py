@@ -1,5 +1,8 @@
+import threading
+
 from rest_framework import serializers
 
+from shop.models import Transaction
 from users.models import CustomUser, Grade, Field, City, Student, Wallet
 
 
@@ -32,6 +35,19 @@ class CitySerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+def give_invitation_gift(data):
+    student = Student.objects.get(invitation_code=data['invitation_code'])
+    transaction = Transaction(user=student.user,
+                              price=10000,
+                              payment_method=Transaction.PaymentMethod.gift,
+                              status=Transaction.Status.SUCCESS,
+                              description='جایزه دعوت از دوستان خود')
+    transaction.save()
+    wallet = Wallet.objects.get(student=student)
+    wallet.balance += 10000
+    wallet.save()
+
+
 class StudentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Student
@@ -52,6 +68,16 @@ class StudentSerializer(serializers.ModelSerializer):
 
         wallet = Wallet(student=student)
         wallet.save()
+
+        if 'invitation_code' in self.validated_data:
+            data = {
+                'invitation_code': self.validated_data['invitation_code'],
+                'student': student,
+            }
+            thread = threading.Thread(target=give_invitation_gift,
+                                      args=[data])
+            thread.setDaemon(True)
+            thread.start()
 
         return student
 
