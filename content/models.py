@@ -5,7 +5,7 @@ from django.db import models
 from users.models import Grade, Field
 
 
-class Category(models.Model):
+class ContentCategory(models.Model):
     class TypeChoices(models.TextChoices):
         VIDEO = 'video'
         AUDIO = 'audio'
@@ -20,7 +20,7 @@ class Category(models.Model):
 
 
 class Content(models.Model):
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    category = models.ForeignKey(ContentCategory, on_delete=models.CASCADE)
     title = models.CharField(max_length=100, null=False, blank=False)
     subtitle = models.CharField(max_length=100, null=False, blank=False)
     description = models.TextField(max_length=500, null=True, blank=True)

@@ -4,7 +4,7 @@ from lessons.models import Lesson
 from users.models import Grade, Student
 
 
-class Category(models.Model):
+class CurriculumCategory(models.Model):
     name = models.CharField(max_length=255)
 
     def __str__(self):
@@ -21,7 +21,7 @@ class CurriculumItem(models.Model):
         exam = 'exam'
 
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    category = models.ForeignKey(CurriculumCategory, on_delete=models.CASCADE)
     grade = models.ForeignKey(Grade, on_delete=models.CASCADE)
     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
     question_type = models.CharField(max_length=255, choices=QuestionType.choices, default=QuestionType.test)

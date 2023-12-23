@@ -4,7 +4,7 @@ from django.db import models
 from users.models import Student
 
 
-class Category(models.Model):
+class TicketCategory(models.Model):
     name = models.CharField(max_length=100)
 
     def __str__(self):
@@ -17,7 +17,7 @@ class Ticket(models.Model):
         IN_PROGRESS = 'in_progress'
         Answered = 'answered'
 
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    category = models.ForeignKey(TicketCategory, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
     state = models.CharField(max_length=100, default=State.IN_PROGRESS, choices=State.choices)

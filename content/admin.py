@@ -1,10 +1,10 @@
 from django.contrib import admin
 
 # Register your models here.
-from content.models import Category, Content, Exam
+from content.models import ContentCategory, Content, Exam
 
 
-@admin.register(Category)
+@admin.register(ContentCategory)
 class CustomUserAdmin(admin.ModelAdmin):
     list_display = ('name',)
     # list_filter = ('app_type', 'version')

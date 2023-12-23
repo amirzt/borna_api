@@ -1,10 +1,10 @@
 from django.contrib import admin
 
 # Register your models here.
-from content.models import Category
+from .models import CurriculumCategory
 
 
-@admin.register(Category)
+@admin.register(CurriculumCategory)
 class CustomUserAdmin(admin.ModelAdmin):
     list_display = ('name',)
     # list_filter = ('grade', 'field')
