@@ -26,3 +26,15 @@ class Transaction(models.Model):
     tracking_code = models.CharField(max_length=50, null=True, blank=True)
     description = models.TextField(null=True, blank=True, max_length=1000)
     gateway = models.CharField(max_length=50, null=True, blank=True)
+
+
+class Plan(models.Model):
+    title = models.CharField(max_length=255, null=False, blank=False)
+    description = models.TextField(max_length=1000, null=False, blank=False)
+    price = models.IntegerField(null=False, blank=False)
+    is_available = models.BooleanField(default=True)
+    duration = models.IntegerField(null=False, blank=False)
+    bazar_myket = models.CharField(max_length=100, default='', null=False)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)

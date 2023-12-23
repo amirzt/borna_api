@@ -4,15 +4,13 @@ from rest_framework.response import Response
 
 from lessons.models import Lesson
 from lessons.serializers import LessonSerializer
-from users.models import Student
 
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def get_lessons(request):
-    student = Student.objects.get(user=request.user)
-    lesson = Lesson.objects.filter(grade=student.grade,
-                                   field=student.field)
+    lesson = Lesson.objects.filter(grade=request.data['grade'],
+                                   field=request.data['field'],)
     serializer = LessonSerializer(lesson, many=True)
     return Response(serializer.data)
 
