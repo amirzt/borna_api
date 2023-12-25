@@ -10,7 +10,7 @@ from .models import Plan
 class TransactionAdmin(admin.ModelAdmin):
     list_display = ('user', 'price', 'status', 'date',)
     list_filter = ('status', 'date',)
-    fields = ('user', 'date', 'price', 'status', 'payment_method', 'tracking_code', 'description', 'gateway')
+    fields = ('user', 'price', 'status', 'payment_method', 'tracking_code', 'description', 'gateway')
 
 
 @admin.register(Plan)
