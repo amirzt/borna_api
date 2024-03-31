@@ -6,4 +6,4 @@ from lessons.models import Lesson
 class LessonSerializer(serializers.ModelSerializer):
     class Meta:
         model = Lesson
-        fields = ('id', 'name', 'grade', 'field')
+        fields = ('id', 'name', 'grade')

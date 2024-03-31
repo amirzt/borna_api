@@ -3,7 +3,8 @@ import threading
 from rest_framework import serializers
 
 from shop.models import Transaction
-from users.models import CustomUser, Grade, Field, City, Student, Wallet
+from users.models import CustomUser, Grade, Field, City, Student, Wallet, Banner, TutorialVideo, University, \
+    AdvisorRequest
 
 
 class CustomUserSerializer(serializers.ModelSerializer):
@@ -51,13 +52,11 @@ def give_invitation_gift(data):
 class StudentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Student
-        fields = ['grade', 'field', 'city']
+        fields = ['grade']
 
     def save(self, **kwargs):
         student = Student(user=self.context.get('user'),
-                          grade=self.validated_data['grade'],
-                          field=self.validated_data['field'],
-                          city=self.validated_data['city'])
+                          grade=self.validated_data['grade'],)
         student.save()
 
         if 'first_name' in self.validated_data:
@@ -90,7 +89,7 @@ class WalletSerializer(serializers.ModelSerializer):
 
 class GetStudentInfoSerializer(serializers.ModelSerializer):
     grade = GradeSerializer()
-    field = FieldSerializer()
+    # field = FieldSerializer()
     city = CitySerializer()
     user = CustomUserSerializer()
     wallet = serializers.SerializerMethodField('get_wallet')
@@ -101,5 +100,36 @@ class GetStudentInfoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Student
-        fields = ['first_name', 'last_name', 'grade', 'field', 'city', 'student_code', 'id', 'user', 'wallet',
-                  'invitation_code']
+        fields = ['first_name', 'last_name', 'grade', 'city', 'student_code', 'id', 'user', 'wallet',
+                  'invitation_code', 'image']
+
+
+class BannerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Banner
+        fields = '__all__'
+
+
+class TutorialSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TutorialVideo
+        fields = '__all__'
+
+
+class UniversitySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = University
+        fields = '__all__'
+
+
+class AddAdvisorRequest(serializers.ModelSerializer):
+    class Meta:
+        model = AdvisorRequest
+        fields = ['name', 'phone']
+
+    def save(self, **kwargs):
+        request = AdvisorRequest(name=self.validated_data['name'],
+                                 phone=self.validated_data['phone'],
+                                 student=Student.objects.get(user=self.context.user))
+        request.save()
+        return request

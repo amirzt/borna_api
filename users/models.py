@@ -74,13 +74,14 @@ class Student(models.Model):
     last_name = models.CharField(max_length=50, null=True, blank=False)
 
     grade = models.ForeignKey(Grade, on_delete=models.CASCADE)
-    field = models.ForeignKey(Field, on_delete=models.CASCADE)
+    # field = models.ForeignKey(Field, on_delete=models.CASCADE)
     city = models.ForeignKey(City, on_delete=models.CASCADE)
     student_code = models.CharField(max_length=20, null=False, blank=False, unique=True, default=get_student_code)
     invitation_code = models.CharField(max_length=20, null=False, blank=False, unique=True, default=get_invitation_code)
+    image = models.ImageField(upload_to='user/image', null=True)
 
     def __str__(self):
-        return self.first_name + ' ' + self.last_name
+        return self.first_name + ' ' + self.last_name + "-" + self.grade.title
 
 
 class Wallet(models.Model):
@@ -89,3 +90,35 @@ class Wallet(models.Model):
 
     def __str__(self):
         return self.student.first_name
+
+
+class Banner(models.Model):
+    image = models.ImageField(upload_to='home/banner', null=False, blank=False)
+    url = models.URLField(null=False, blank=False)
+    is_active = models.BooleanField(default=True)
+
+
+class TutorialVideo(models.Model):
+    file = models.FileField(upload_to='home/tutorial', null=False, blank=False)
+    title = models.CharField(max_length=200, null=False, blank=False)
+    description = models.TextField(max_length=1000, blank=True)
+
+
+class University(models.Model):
+    name = models.TextField(max_length=100, null=False, blank=False)
+    logo = models.ImageField(upload_to='university')
+    url = models.URLField(null=False)
+
+
+class UniversityTarget(models.Model):
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    university = models.ForeignKey(University, on_delete=models.CASCADE)
+
+
+class AdvisorRequest(models.Model):
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    name = models.CharField(max_length=100, null=False)
+    phone = models.CharField(max_length=11, null=False, blank=False, )
+
+    is_called = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)

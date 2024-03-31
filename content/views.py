@@ -25,6 +25,6 @@ def get_content(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def get_exam(request):
-    exams = Exam.objects.filter(grade=request.data['grade'], field=request.data['field'])
+    exams = Exam.objects.filter(grade=request.data['grade'], type=request.data['type'])
     serializer = ExamSerializer(exams, many=True)
     return Response(serializer.data)

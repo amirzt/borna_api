@@ -1,9 +1,10 @@
 from django.db.models import Sum
+from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-from curriculum.models import Category, CurriculumItem
+from curriculum.models import CurriculumCategory, CurriculumItem
 from curriculum.serializers import GetCategoriesSerializer, AddCurriculumSerializer, GetCurriculumSerializer
 from users.models import Student
 
@@ -11,7 +12,7 @@ from users.models import Student
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_categories(request):
-    categories = Category.objects.all()
+    categories = CurriculumCategory.objects.all()
     serializer = GetCategoriesSerializer(categories, many=True)
     return Response(serializer.data)
 
@@ -58,3 +59,14 @@ def get_time_by_date(request):
     sums = sorted(response.items(), key=lambda x: x[0], reverse=False)
     return Response(sums)
 
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def get_day_total(request):
+    items = CurriculumItem.objects.filter(date=request.data['date'])
+
+    total = 0
+    for item in items:
+        total += item.time
+
+    return Response({"total_time": total}, status=status.HTTP_200_OK)

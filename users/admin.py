@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from users.models import CustomUser, Grade, Field, City, Student
+from users.models import CustomUser, Grade, Field, City, Student, Banner, TutorialVideo, AdvisorRequest, University
 
 
 @admin.register(CustomUser)
@@ -35,6 +35,35 @@ class CityAdmin(admin.ModelAdmin):
 @admin.register(Student)
 class StudentAdmin(admin.ModelAdmin):
     list_display = ('user', 'first_name', 'last_name', 'grade', 'field')
-    list_filter = ('grade', 'field', 'city')
+    list_filter = ('grade', 'city')
     search_fields = ('user__phone__startswith', 'first_name__startswith', 'last_name__startswith')
-    fields = ('user', 'first_name', 'last_name', 'student_code', 'grade', 'field', 'city', 'invitation_code')
+    fields = ('user', 'first_name', 'last_name', 'student_code', 'grade', 'city', 'invitation_code')
+
+
+@admin.register(Banner)
+class BannerAdmin(admin.ModelAdmin):
+    list_display = ('image', 'url', 'is_active',)
+    # search_fields = ('title__startswith',)
+    fields = ('image', 'url', 'is_active',)
+
+
+@admin.register(TutorialVideo)
+class TutorialVideoAdmin(admin.ModelAdmin):
+    list_display = ('title',)
+    search_fields = ('title__startswith',)
+    fields = ('title', 'file', 'description')
+
+
+@admin.register(University)
+class UniversityAdmin(admin.ModelAdmin):
+    list_display = ('name',)
+    search_fields = ('name__startswith',)
+    fields = ('title', 'logo', 'url')
+
+
+@admin.register(AdvisorRequest)
+class AdvisorAdmin(admin.ModelAdmin):
+    list_display = ('name', 'phone', 'is_called', 'created_at')
+    search_fields = ('name__startswith',)
+    list_filter = ('is_called',)
+    fields = ('student', 'name', 'phone', 'is_called',)

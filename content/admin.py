@@ -9,7 +9,7 @@ class CustomUserAdmin(admin.ModelAdmin):
     list_display = ('name',)
     # list_filter = ('app_type', 'version')
     search_fields = ('name__startswith',)
-    fields = ('name', 'description', 'type', 'image',)
+    fields = ('name', 'description', 'image',)
 
 
 @admin.register(Content)
@@ -17,7 +17,7 @@ class CustomUserAdmin(admin.ModelAdmin):
     list_display = ('title',)
     list_filter = ('category',)
     search_fields = ('title__startswith',)
-    fields = ('category', 'title', 'subtitle', 'description', 'preview_image', 'content', )
+    fields = ('category', 'type', 'title', 'subtitle', 'description', 'preview_image', 'content', )
 
 
 @admin.register(Exam)
@@ -25,4 +25,4 @@ class CustomUserAdmin(admin.ModelAdmin):
     list_display = ('title',)
     list_filter = ('grade', 'field')
     search_fields = ('title__startswith',)
-    fields = ('grade', 'field', 'title', 'subtitle', 'file', )
+    fields = ('grade', 'title', 'subtitle', 'file', )

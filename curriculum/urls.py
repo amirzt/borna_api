@@ -7,4 +7,6 @@ urlpatterns = [
     path('add_curriculum/', views.add_curriculum, name='add_curriculum'),
     path('get_curriculum/', views.get_curriculum, name='get_curriculum'),
     path('delete_curriculum/', views.delete_curriculum, name='delete_curriculum'),
+    path('get_day_total/', views.get_day_total, name='get_day_total'),
+
 ]

@@ -9,4 +9,9 @@ urlpatterns = [
     path('register/', views.register, name='register'),
     path('get_student_info/', views.get_student_info, name='get_student_info'),
     path('update_student_info/', views.update_student_info, name='update_student_info'),
+    path('get_home/', views.get_home, name='get_home'),
+    path('get_universities/', views.get_universities, name='get_universities'),
+    path('add_target/', views.add_target, name='add_target'),
+    path('advisor_request/', views.advisor_request, name='advisor_request'),
+
 ]

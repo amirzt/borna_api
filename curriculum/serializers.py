@@ -1,11 +1,11 @@
 from rest_framework import serializers
 
-from curriculum.models import CurriculumItem, Category
+from curriculum.models import CurriculumItem, CurriculumCategory
 
 
 class GetCategoriesSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Category
+        model = CurriculumCategory
         fields = '__all__'
 
 
@@ -18,16 +18,14 @@ class AddCurriculumSerializer(serializers.ModelSerializer):
         item = CurriculumItem(category=self.validated_data['category'],
                               lesson=self.validated_data['lesson'],
                               time=self.validated_data['time'],
-                              grade=self.validated_data['grade'],
+                              # grade=self.validated_data['grade'],
                               student=self.context['student'],
                               date=self.validated_data['date'])
         item.save()
-        if 'question_type' in self.validated_data:
-            item.question_type = self.validated_data['question_type']
+        if 'test_count' in self.validated_data:
+            item.test_count = self.validated_data['test_count']
         if 'question_count' in self.validated_data:
             item.question_count = self.validated_data['question_count']
-        if 'test_type' in self.validated_data:
-            item.test_type = self.validated_data['test_type']
         item.save()
 
         return item

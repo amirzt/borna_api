@@ -12,20 +12,12 @@ class CurriculumCategory(models.Model):
 
 
 class CurriculumItem(models.Model):
-    class QuestionType(models.TextChoices):
-        test = 'test'
-        tashrihi = 'tashrihi'
-
-    class TestType(models.TextChoices):
-        test = 'test'
-        exam = 'exam'
 
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
     category = models.ForeignKey(CurriculumCategory, on_delete=models.CASCADE)
-    grade = models.ForeignKey(Grade, on_delete=models.CASCADE)
+    # grade = models.ForeignKey(Grade, on_delete=models.CASCADE)
     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
-    question_type = models.CharField(max_length=255, choices=QuestionType.choices, default=QuestionType.test)
     question_count = models.IntegerField(default=0)
-    test_type = models.CharField(max_length=255, choices=TestType.choices, default=TestType.test)
+    test_count = models.IntegerField(default=0)
     time = models.IntegerField(default=0)
     date = models.DateField(null=False, blank=False)

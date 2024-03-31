@@ -1,7 +1,6 @@
 from django.contrib import admin
 from . import models
 
-
 # Register your models here.
 from .models import Plan
 
@@ -19,4 +18,3 @@ class FontAdmin(admin.ModelAdmin):
     # list_filter = ('category', 'is_done', 'date',)
     search_fields = ('title__startswith',)
     fields = ('title', 'price', 'is_available', 'duration', 'description', 'bazar_myket',)
-
