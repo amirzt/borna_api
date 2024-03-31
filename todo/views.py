@@ -4,7 +4,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from todo.models import Task
-from todo.serializers import TaskSerializer
+from todo.serializers import TaskSerializer, GetTaskSerializer
 
 
 @api_view(['POST'])
@@ -23,8 +23,8 @@ def add_task(request):
 @permission_classes([IsAuthenticated])
 def get_tasks(request):
     tasks = Task.objects.filter(date=request.data['date'],
-                                user=request.user)
-    return Response(TaskSerializer(tasks, many=True).data)
+                                student__user=request.user)
+    return Response(GetTaskSerializer(tasks, many=True).data)
 
 
 @api_view(['POST'])

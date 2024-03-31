@@ -15,6 +15,7 @@ class Task(models.Model):
     time = models.IntegerField(default=0)
     is_done = models.BooleanField(default=False)
     date = models.DateField(auto_now_add=True)
+    priority = models.CharField(choices=Priority.choices, max_length=100, default=Priority.low)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

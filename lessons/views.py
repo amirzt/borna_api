@@ -10,7 +10,7 @@ from users.models import Student
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def get_lessons(request):
-    lesson = Lesson.objects.filter(grade=Student(user=request.user).grade)
+    lesson = Lesson.objects.filter(grade=Student.objects.get(user=request.user).grade)
     serializer = LessonSerializer(lesson, many=True)
     return Response(serializer.data)
 

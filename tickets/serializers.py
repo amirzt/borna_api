@@ -29,10 +29,16 @@ class AddTicketSerializer(serializers.ModelSerializer):
 
 class GetTicketSerializer(serializers.ModelSerializer):
     student = GetStudentInfoSerializer()
+    last_message = serializers.SerializerMethodField('get_last_message')
+
+    @staticmethod
+    def get_last_message(self):
+        messages = Message.objects.filter(ticket=self).order_by('created_at').last()
+        return GetMessageSerializer(messages).data
 
     class Meta:
         model = Ticket
-        fields = ('id', 'category', 'created_at', 'state', 'student')
+        fields = ('id', 'category', 'created_at', 'state', 'student', 'last_message')
 
 
 class GetMessageSerializer(serializers.ModelSerializer):

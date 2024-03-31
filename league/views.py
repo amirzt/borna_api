@@ -12,6 +12,6 @@ def get_league(request):
     league_item = LeagueItem.objects.filter(date=request.data['date']).order_by('rank')
     return Response({
         'data': LeagueSerializer(league_item, many=True).data,
-        'user_rank': LeagueItem.objects.get(date=request.data['date'],
-                                            student__user=request.user).rank
+        'user_rank': LeagueItem.objects.filter(date=request.data['date'],
+                                               student__user=request.user).last().rank
     })

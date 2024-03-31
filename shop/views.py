@@ -48,3 +48,9 @@ def add_bazar_myket_order(request):
         return Response(status=status.HTTP_200_OK)
     else:
         return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def start_transaction(request):
+    pass

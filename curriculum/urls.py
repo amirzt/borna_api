@@ -8,5 +8,7 @@ urlpatterns = [
     path('get_curriculum/', views.get_curriculum, name='get_curriculum'),
     path('delete_curriculum/', views.delete_curriculum, name='delete_curriculum'),
     path('get_day_total/', views.get_day_total, name='get_day_total'),
+    path('get_time_by_date/', views.get_time_by_date, name='get_time_by_date'),
+    path('total_by_lesson/', views.total_by_lesson, name='get_time_by_date'),
 
 ]

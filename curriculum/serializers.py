@@ -12,7 +12,7 @@ class GetCategoriesSerializer(serializers.ModelSerializer):
 class AddCurriculumSerializer(serializers.ModelSerializer):
     class Meta:
         model = CurriculumItem
-        fields = ['category', 'lesson', 'time', 'grade', 'date']
+        fields = ['category', 'lesson', 'time', 'date', 'test_count', 'question_count']
 
     def save(self, **kwargs):
         item = CurriculumItem(category=self.validated_data['category'],

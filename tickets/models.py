@@ -23,7 +23,7 @@ class Ticket(models.Model):
     state = models.CharField(max_length=100, default=State.IN_PROGRESS, choices=State.choices)
 
     def __str__(self):
-        return self.student
+        return self.student.user.phone
 
 
 class Message(models.Model):

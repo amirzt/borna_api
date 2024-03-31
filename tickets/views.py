@@ -19,7 +19,8 @@ def get_categories(request):
 @permission_classes([IsAuthenticated])
 def add_ticket(request):
     serializer = AddTicketSerializer(data=request.data,
-                                     context={'user': request.user})
+                                     context={'user': request.user,
+                                              'content': request.data['content']})
     if serializer.is_valid():
         serializer.save()
         return Response({'message': 'Ticket added successfully'})
