@@ -23,6 +23,6 @@ class CustomUserAdmin(admin.ModelAdmin):
 @admin.register(Exam)
 class CustomUserAdmin(admin.ModelAdmin):
     list_display = ('title',)
-    list_filter = ('grade', 'field')
+    list_filter = ('grade', 'type')
     search_fields = ('title__startswith',)
-    fields = ('grade', 'title', 'subtitle', 'file', )
+    fields = ('grade', 'title', 'subtitle', 'file', 'type')

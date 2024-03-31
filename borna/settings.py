@@ -28,7 +28,8 @@ INSTALLED_APPS = [
     'lessons',
     'curriculum',
     'todo',
-    'league'
+    'league',
+    'support'
 ]
 
 MIDDLEWARE = [

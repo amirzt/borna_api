@@ -2,7 +2,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-from tickets.models import Category, Ticket, Message
+from tickets.models import TicketCategory, Ticket, Message
 from tickets.serializers import TicketCategorySerializer, AddTicketSerializer, GetTicketSerializer, \
     GetMessageSerializer, AddMessageSerializer
 
@@ -10,7 +10,7 @@ from tickets.serializers import TicketCategorySerializer, AddTicketSerializer, G
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_categories(request):
-    categories = Category.objects.all()
+    categories = TicketCategory.objects.all()
     serializer = TicketCategorySerializer(categories, many=True)
     return Response(serializer.data)
 

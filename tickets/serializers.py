@@ -1,13 +1,13 @@
 from rest_framework import serializers
 
-from tickets.models import Category, Ticket, Message
+from tickets.models import TicketCategory, Ticket, Message
 from users.models import Student
 from users.serializers import GetStudentInfoSerializer
 
 
 class TicketCategorySerializer(serializers.ModelSerializer):
     class Meta:
-        model = Category
+        model = TicketCategory
         fields = ('id', 'name')
 
 

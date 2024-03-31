@@ -75,7 +75,7 @@ class Student(models.Model):
 
     grade = models.ForeignKey(Grade, on_delete=models.CASCADE)
     # field = models.ForeignKey(Field, on_delete=models.CASCADE)
-    city = models.ForeignKey(City, on_delete=models.CASCADE)
+    city = models.ForeignKey(City, on_delete=models.CASCADE, null=True)
     student_code = models.CharField(max_length=20, null=False, blank=False, unique=True, default=get_student_code)
     invitation_code = models.CharField(max_length=20, null=False, blank=False, unique=True, default=get_invitation_code)
     image = models.ImageField(upload_to='user/image', null=True)

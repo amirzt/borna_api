@@ -1,6 +1,5 @@
 from django.db import models
 
-
 # Create your models here.
 from users.models import Grade, Field
 
@@ -19,7 +18,8 @@ class Content(models.Model):
         VIDEO = 'video'
         AUDIO = 'audio'
 
-    type = models.CharField(max_length=100, blank=False, null=False, default=TypeChoices.VIDEO)
+    type = models.CharField(max_length=100, blank=False, null=False, default=TypeChoices.VIDEO,
+                            choices=TypeChoices.choices)
     category = models.ForeignKey(ContentCategory, on_delete=models.CASCADE)
     title = models.CharField(max_length=100, null=False, blank=False)
     subtitle = models.CharField(max_length=100, null=False, blank=False)
@@ -32,11 +32,11 @@ class Content(models.Model):
 
 
 class Exam(models.Model):
-    class Type:
+    class ExamType(models.TextChoices):
         test = 'test'
         question = 'question'
 
-    type = models.CharField(max_length=100, blank=False, null=False, default=Type.test)
+    type = models.CharField(max_length=100, blank=False, null=False, default=ExamType.test, choices=ExamType.choices)
     grade = models.ForeignKey(Grade, on_delete=models.CASCADE)
     # field = models.ForeignKey(Field, on_delete=models.CASCADE)
     title = models.CharField(max_length=100, null=False, blank=False)

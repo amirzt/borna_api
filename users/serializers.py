@@ -52,7 +52,7 @@ def give_invitation_gift(data):
 class StudentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Student
-        fields = ['grade']
+        fields = ['grade', 'first_name', 'last_name']
 
     def save(self, **kwargs):
         student = Student(user=self.context.get('user'),
@@ -100,7 +100,7 @@ class GetStudentInfoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Student
-        fields = ['first_name', 'last_name', 'grade', 'city', 'student_code', 'id', 'user', 'wallet',
+        fields = ['first_name', 'last_name', 'grade', 'city', 'student_code', 'user', 'wallet',
                   'invitation_code', 'image']
 
 
@@ -130,6 +130,6 @@ class AddAdvisorRequest(serializers.ModelSerializer):
     def save(self, **kwargs):
         request = AdvisorRequest(name=self.validated_data['name'],
                                  phone=self.validated_data['phone'],
-                                 student=Student.objects.get(user=self.context.user))
+                                 student=Student.objects.get(user=self.context.get('user')))
         request.save()
         return request

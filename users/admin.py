@@ -34,7 +34,7 @@ class CityAdmin(admin.ModelAdmin):
 
 @admin.register(Student)
 class StudentAdmin(admin.ModelAdmin):
-    list_display = ('user', 'first_name', 'last_name', 'grade', 'field')
+    list_display = ('user', 'first_name', 'last_name', 'grade')
     list_filter = ('grade', 'city')
     search_fields = ('user__phone__startswith', 'first_name__startswith', 'last_name__startswith')
     fields = ('user', 'first_name', 'last_name', 'student_code', 'grade', 'city', 'invitation_code')
@@ -58,7 +58,7 @@ class TutorialVideoAdmin(admin.ModelAdmin):
 class UniversityAdmin(admin.ModelAdmin):
     list_display = ('name',)
     search_fields = ('name__startswith',)
-    fields = ('title', 'logo', 'url')
+    fields = ('name', 'logo', 'url')
 
 
 @admin.register(AdvisorRequest)

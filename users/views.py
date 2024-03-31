@@ -52,23 +52,33 @@ def register(request):
         user_serializer = CustomUserSerializer(data=request.data)
 
         if user_serializer.is_valid():
-            user = user_serializer.save()
-            student_serializer = StudentSerializer(data=request.data, context={'user': user})
-            if student_serializer.is_valid():
-                student_serializer.save()
+            user_serializer.save()
+            return Response({
+                'exist': False
+            })
 
-                user.is_active = True
-                user.save()
-
-                token, created = Token.objects.get_or_create(user=user)
-
-                return Response({
-                    'token': token.key,
-                }, status=200)
-            else:
-                return Response(student_serializer.errors, status=400)
         else:
             return Response(user_serializer.errors, status=400)
+
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def add_student(request):
+    user = CustomUser.objects.get(phone=request.data['phone'])
+    student_serializer = StudentSerializer(data=request.data, context={'user': user})
+    if student_serializer.is_valid():
+        student_serializer.save()
+
+        user.is_active = True
+        user.save()
+
+        token, created = Token.objects.get_or_create(user=user)
+
+        return Response({
+            'token': token.key,
+        }, status=200)
+    else:
+        return Response(student_serializer.errors, status=400)
 
 
 @api_view(['GET'])
@@ -116,7 +126,7 @@ def add_target(request):
         pass
 
     new_target = UniversityTarget(student=Student.objects.get(user=request.user),
-                                  university=request.data['university'])
+                                  university_id=request.data['university'])
     new_target.save()
     return Response(status=status.HTTP_200_OK)
 
