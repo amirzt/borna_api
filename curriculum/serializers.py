@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
 from curriculum.models import CurriculumItem, CurriculumCategory
+from lessons.serializers import LessonSerializer
 
 
 class GetCategoriesSerializer(serializers.ModelSerializer):
@@ -32,6 +33,9 @@ class AddCurriculumSerializer(serializers.ModelSerializer):
 
 
 class GetCurriculumSerializer(serializers.ModelSerializer):
+    lesson = LessonSerializer()
+    category = GetCategoriesSerializer()
+
     class Meta:
         model = CurriculumItem
         fields = '__all__'
