@@ -1,6 +1,7 @@
 from django.db import models
 
 # Create your models here.
+from lessons.models import Lesson
 from users.models import Grade, Field
 
 
@@ -37,8 +38,9 @@ class Exam(models.Model):
         question = 'question'
 
     type = models.CharField(max_length=100, blank=False, null=False, default=ExamType.test, choices=ExamType.choices)
-    grade = models.ForeignKey(Grade, on_delete=models.CASCADE)
+    # grade = models.ForeignKey(Grade, on_delete=models.CASCADE)
     # field = models.ForeignKey(Field, on_delete=models.CASCADE)
+    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, null=True, default=1)
     title = models.CharField(max_length=100, null=False, blank=False)
     subtitle = models.CharField(max_length=100, null=False, blank=False)
     file = models.FileField(upload_to='content/exam', blank=True, null=True)
