@@ -37,7 +37,7 @@ class StudentAdmin(admin.ModelAdmin):
     list_display = ('user', 'first_name', 'last_name', 'grade')
     list_filter = ('grade', 'city')
     search_fields = ('user__phone__startswith', 'first_name__startswith', 'last_name__startswith')
-    fields = ('user', 'first_name', 'last_name', 'student_code', 'grade', 'city', 'invitation_code')
+    fields = ('user', 'first_name', 'last_name', 'student_code', 'grade', 'city', 'invitation_code', 'expire_date')
 
 
 @admin.register(Banner)

@@ -59,14 +59,20 @@ def get_time_by_date(request):
     response = {}
     items = CurriculumItem.objects.filter(student=Student.objects.get(user=request.user),
                                           date__gte=request.data['start_date'],
-                                          date__lte=request.data['end_date'])
+                                          date__lte=request.data['end_date'],
+                                          lesson=request.data['lesson'])
+
+    # league_items = LeagueItem.objects.filter(student=Student.objects.get(user=request.user),
+    #                                       date__gte=request.data['start_date'],
+    #                                       date__lte=request.data['end_date'])
     for item in items:
         same_date = items.filter(
             date=item.date)
         response[item.date.strftime('%Y-%m-%d')] = {
             'total_time': same_date.aggregate(Sum('time')),
             'total_test': same_date.aggregate(Sum('test_count')),
-            'total_question': same_date.aggregate(Sum('question_count'))
+            'total_question': same_date.aggregate(Sum('question_count')),
+            # 'league_score': league_items.aggregate(Avg('score'))
         }
     sums = sorted(response.items(), key=lambda x: x[0], reverse=False)
     return Response(sums)
@@ -89,8 +95,7 @@ def get_day_total(request):
 def total_by_lesson(request):
     c1 = CurriculumItem.objects.filter(student=Student.objects.get(user=request.user),
                                        date__gte=request.data['s1'],
-                                       date__lte=request.data['e1'],
-                                       lesson=request.data['lesson'])
+                                       date__lte=request.data['e1'])
     l1 = LeagueItem.objects.filter(student=Student.objects.get(user=request.user),
                                    date__gte=request.data['s1'],
                                    date__lte=request.data['e1'],)
@@ -100,7 +105,7 @@ def total_by_lesson(request):
             'total_test': c1.aggregate(Sum('test_count')),
             'total_question': c1.aggregate(Sum('question_count')),
             'total_time': c1.aggregate(Sum('time')),
-            'clone': l1.aggregate(Avg('score'))
+            'clone': l1.aggregate(Sum('score'))
         }
     }
     return Response(data=data)

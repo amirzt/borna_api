@@ -1,3 +1,5 @@
+import datetime
+
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 from django.db import models
@@ -68,6 +70,9 @@ def get_invitation_code():
     return code
 
 
+def get_today():
+    return datetime.datetime.now()
+
 class Student(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, primary_key=True)
     first_name = models.CharField(max_length=50, null=True, blank=False)
@@ -79,6 +84,7 @@ class Student(models.Model):
     student_code = models.CharField(max_length=20, null=False, blank=False, unique=True, default=get_student_code)
     invitation_code = models.CharField(max_length=20, null=False, blank=False, unique=True, default=get_invitation_code)
     image = models.ImageField(upload_to='user/image', null=True)
+    expire_date = models.DateField(default=get_today)
 
     def __str__(self):
         return self.first_name + ' ' + self.last_name + "-" + self.grade.title

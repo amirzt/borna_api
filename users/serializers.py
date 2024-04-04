@@ -101,7 +101,7 @@ class GetStudentInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Student
         fields = ['first_name', 'last_name', 'grade', 'city', 'student_code', 'user', 'wallet',
-                  'invitation_code', 'image']
+                  'invitation_code', 'image', 'expire_date']
 
 
 class BannerSerializer(serializers.ModelSerializer):
