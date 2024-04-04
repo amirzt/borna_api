@@ -6,7 +6,7 @@ from content.models import ContentCategory, Content, Exam
 from content.serializers import ContentCategorySerializer, ContentSerializer, ExamSerializer
 
 
-@api_view(['GET'])
+@api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def get_content_categories(request):
     if 'special' in request.data:
