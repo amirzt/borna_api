@@ -30,6 +30,7 @@ class AddTicketSerializer(serializers.ModelSerializer):
 class GetTicketSerializer(serializers.ModelSerializer):
     student = GetStudentInfoSerializer()
     last_message = serializers.SerializerMethodField('get_last_message')
+    category = TicketCategorySerializer()
 
     @staticmethod
     def get_last_message(self):
