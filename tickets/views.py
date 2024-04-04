@@ -30,7 +30,7 @@ def add_ticket(request):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_tickets(request):
-    tickets = Ticket.objects.filter(student__user=request.user)
+    tickets = Ticket.objects.filter(student__user=request.user).order_by('-created_at')
     serializer = GetTicketSerializer(tickets, many=True)
     return Response(serializer.data)
 
@@ -38,7 +38,7 @@ def get_tickets(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def get_messages(request):
-    messages = Message.objects.filter(ticket_id=request.data['ticket'])
+    messages = Message.objects.filter(ticket_id=request.data['ticket']).order_by('-created_at')
     serializer = GetMessageSerializer(messages, many=True)
     return Response(serializer.data)
 

@@ -9,6 +9,7 @@ class ContentCategory(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField(max_length=500, blank=False, null=False)
     image = models.ImageField(upload_to='content/category', blank=True, null=True)
+    is_special = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name

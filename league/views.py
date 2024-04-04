@@ -10,8 +10,10 @@ from league.serializers import LeagueSerializer
 @permission_classes([IsAuthenticated])
 def get_league(request):
     league_item = LeagueItem.objects.filter(date=request.data['date']).order_by('rank')
+
+    user_rank = LeagueItem.objects.filter(date=request.data['date'],
+                                          student__user=request.user)
     return Response({
         'data': LeagueSerializer(league_item, many=True).data,
-        'user_rank': LeagueItem.objects.filter(date=request.data['date'],
-                                               student__user=request.user).last().rank
+        'user_rank': user_rank.last().rank if user_rank.count() != 0 else 0
     })

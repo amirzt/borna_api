@@ -9,7 +9,10 @@ from content.serializers import ContentCategorySerializer, ContentSerializer, Ex
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_content_categories(request):
-    categories = ContentCategory.objects.all()
+    if 'special' in request.data:
+        categories = ContentCategory.objects.filter(is_special=True)
+    else:
+        categories = ContentCategory.objects.filter(is_special=False)
     serializer = ContentCategorySerializer(categories, many=True)
     return Response(serializer.data)
 
