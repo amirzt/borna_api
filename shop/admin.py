@@ -20,4 +20,4 @@ class FontAdmin(admin.ModelAdmin):
     fields = ('title', 'price', 'is_available', 'duration', 'description', 'bazar_myket',)
 
 
-admin.site.register(ZarinpalMerchantCode)
+# admin.site.register(ZarinpalMerchantCode)
