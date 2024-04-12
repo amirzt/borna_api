@@ -101,10 +101,10 @@ class GetStudentInfoSerializer(serializers.ModelSerializer):
 
     @staticmethod
     def get_advisor(self):
-        try:
-            advisor = AdvisorRequest.objects.filter(student=self)
-            return advisor.date
-        except AdvisorRequest.DoesNotExist:
+        advisor = AdvisorRequest.objects.filter(student=self)
+        if advisor.count() > 0 :
+            return  advisor.last().date
+        else:
             return ''
 
     class Meta:
