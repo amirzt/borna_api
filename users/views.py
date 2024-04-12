@@ -1,12 +1,18 @@
+import json
+
+# from celery.worker.state import requests
 from rest_framework import status
 from rest_framework.authtoken.models import Token
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 
-from users.models import Grade, Field, City, Student, Banner, TutorialVideo, University, UniversityTarget, CustomUser
+from users.models import Grade, Field, City, Student, Banner, TutorialVideo, University, UniversityTarget, CustomUser, \
+    OTP
 from users.serializers import GradeSerializer, FieldSerializer, CitySerializer, CustomUserSerializer, StudentSerializer, \
     GetStudentInfoSerializer, UniversitySerializer, BannerSerializer, TutorialSerializer, AddAdvisorRequest
+
+import requests
 
 
 @api_view(['GET'])
@@ -33,6 +39,26 @@ def get_city(request):
     return Response(serializer.data)
 
 
+def send_otp(otp, phone):
+    api_url = "https://api2.ippanel.com/api/v1/sms/webservice/single"
+
+    headers = {
+        'Content-Type': 'application/json',
+        'apikey': 'Bearer M-o-KUXHu_VfZgtr6dzrptzXjq0GFeZcoT5pV2PCc34='
+    }
+
+    body = {
+        "recipient": [
+            phone
+        ],
+        "sender": "+983000505",
+        # "time": "2025-03-21T09:12:50.824Z",
+        "message": "کد وورد به نرم افزار مشاورسرا \n "+otp+"\n لغو11"
+    }
+    response = requests.post(api_url, headers=headers, data=json.dumps(body))
+    print(response)
+
+
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def register(request):
@@ -43,6 +69,10 @@ def register(request):
 
         token, created = Token.objects.get_or_create(user=user)
 
+        otp = OTP(user=user)
+        otp.save()
+        send_otp(otp.code, user.phone)
+
         return Response({
             'token': token.key,
             'exist': True
@@ -52,13 +82,31 @@ def register(request):
         user_serializer = CustomUserSerializer(data=request.data)
 
         if user_serializer.is_valid():
-            user_serializer.save()
+            user = user_serializer.save()
+
+            otp = OTP(user=user)
+            otp.save()
+            send_otp(otp.code, user.phone)
+
+            token, created = Token.objects.get_or_create(user=user)
+
+
             return Response({
+                'token': token.key,
                 'exist': False
             })
 
         else:
             return Response(user_serializer.errors, status=400)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def check_otp(request):
+    otp = OTP.objects.filter(user=request.user).last()
+    if otp.code == request.data['code']:
+        return Response(status=status.HTTP_200_OK)
+    return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['POST'])

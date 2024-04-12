@@ -1,6 +1,7 @@
 from django.contrib import admin
 
-from users.models import CustomUser, Grade, Field, City, Student, Banner, TutorialVideo, AdvisorRequest, University
+from users.models import CustomUser, Grade, Field, City, Student, Banner, TutorialVideo, AdvisorRequest, University, \
+    OTP, Wallet
 
 
 @admin.register(CustomUser)
@@ -67,3 +68,7 @@ class AdvisorAdmin(admin.ModelAdmin):
     search_fields = ('name__startswith',)
     list_filter = ('is_called',)
     fields = ('student', 'name', 'phone', 'is_called',)
+
+
+admin.site.register(OTP)
+admin.site.register(Wallet)

@@ -7,6 +7,8 @@ urlpatterns = [
     path('field/', views.get_field, name='field'),
     path('city/', views.get_city, name='city'),
     path('register/', views.register, name='register'),
+    path('check_otp/', views.check_otp, name='check_otp'),
+
     path('add_student/', views.add_student, name='add_student'),
     path('get_student_info/', views.get_student_info, name='get_student_info'),
     path('update_student_info/', views.update_student_info, name='update_student_info'),

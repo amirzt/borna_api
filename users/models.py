@@ -70,8 +70,15 @@ def get_invitation_code():
     return code
 
 
+def get_otp():
+    chars = '0123456789'
+    code = get_random_string(length=6, allowed_chars=chars)
+    return code
+
+
 def get_today():
     return datetime.datetime.now()
+
 
 class Student(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, primary_key=True)
@@ -84,7 +91,7 @@ class Student(models.Model):
     student_code = models.CharField(max_length=20, null=False, blank=False, unique=True, default=get_student_code)
     invitation_code = models.CharField(max_length=20, null=False, blank=False, unique=True, default=get_invitation_code)
     image = models.ImageField(upload_to='user/image', null=True)
-    expire_date = models.DateField(default=get_today)
+    expire_date = models.DateTimeField(default=get_today)
 
     def __str__(self):
         return self.first_name + ' ' + self.last_name + "-" + self.grade.title
@@ -128,3 +135,9 @@ class AdvisorRequest(models.Model):
 
     is_called = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
+
+
+class OTP(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    code = models.CharField(max_length=6, null=False, blank=False, default=get_otp)
+    created_at = models.DateField(auto_now_add=True)
