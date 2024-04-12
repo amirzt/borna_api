@@ -19,7 +19,7 @@ def add_task(request):
         task = serializer.save()
         if 'lesson' in request.data:
             task.lesson = Lesson.objects.get(id=request.data['lesson'])
-            task.save()
+        task.save()
         return Response(serializer.data)
     else:
         return Response(serializer.errors)
