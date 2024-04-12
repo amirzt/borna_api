@@ -1,6 +1,7 @@
 import json
 
 # from celery.worker.state import requests
+from django.utils.crypto import get_random_string
 from rest_framework import status
 from rest_framework.authtoken.models import Token
 from rest_framework.decorators import api_view, permission_classes
@@ -109,13 +110,22 @@ def check_otp(request):
     return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
+def get_student_code(grade):
+    chars = '1234567890'
+    random_code = get_random_string(length=4, allowed_chars=chars)
+    code = "402"+grade+random_code
+    return code
+
+
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def add_student(request):
     user = CustomUser.objects.get(phone=request.data['phone'])
     student_serializer = StudentSerializer(data=request.data, context={'user': user})
     if student_serializer.is_valid():
-        student_serializer.save()
+        student = student_serializer.save()
+        student.student_code = get_student_code(student.grade.code)
+        student.save()
 
         user.is_active = True
         user.save()

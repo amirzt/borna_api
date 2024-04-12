@@ -93,15 +93,24 @@ class GetStudentInfoSerializer(serializers.ModelSerializer):
     city = CitySerializer()
     user = CustomUserSerializer()
     wallet = serializers.SerializerMethodField('get_wallet')
+    advisor = serializers.SerializerMethodField('get_advisor')
 
     @staticmethod
     def get_wallet(self):
         return WalletSerializer(Wallet.objects.get(student=self)).data
 
+    @staticmethod
+    def get_advisor(self):
+        try:
+            advisor = AdvisorRequest.objects.filter(student=self)
+            return advisor.date
+        except AdvisorRequest.DoesNotExist:
+            return ''
+
     class Meta:
         model = Student
         fields = ['first_name', 'last_name', 'grade', 'city', 'student_code', 'user', 'wallet',
-                  'invitation_code', 'image', 'expire_date']
+                  'invitation_code', 'image', 'expire_date', 'advisor']
 
 
 class BannerSerializer(serializers.ModelSerializer):
@@ -125,11 +134,12 @@ class UniversitySerializer(serializers.ModelSerializer):
 class AddAdvisorRequest(serializers.ModelSerializer):
     class Meta:
         model = AdvisorRequest
-        fields = ['name', 'phone']
+        fields = ['name', 'phone', 'grade']
 
     def save(self, **kwargs):
         request = AdvisorRequest(name=self.validated_data['name'],
                                  phone=self.validated_data['phone'],
+                                 grade=self.validated_data['grade'],
                                  student=Student.objects.get(user=self.context.get('user')))
         request.save()
         return request

@@ -39,6 +39,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
 class Grade(models.Model):
     title = models.CharField(max_length=30, blank=False)
+    code = models.CharField(max_length=3, default='', null=False)
 
     def __str__(self):
         return self.title
@@ -58,9 +59,10 @@ class City(models.Model):
         return self.title
 
 
-def get_student_code():
+def get_student_code(grade):
     chars = '1234567890'
-    code = get_random_string(length=8, allowed_chars=chars)
+    random_code = get_random_string(length=4, allowed_chars=chars)
+    code = "402" + grade + random_code
     return code
 
 
@@ -88,7 +90,7 @@ class Student(models.Model):
     grade = models.ForeignKey(Grade, on_delete=models.CASCADE)
     # field = models.ForeignKey(Field, on_delete=models.CASCADE)
     city = models.ForeignKey(City, on_delete=models.CASCADE, null=True)
-    student_code = models.CharField(max_length=20, null=False, blank=False, unique=True, default=get_student_code)
+    student_code = models.CharField(max_length=20, null=True, blank=True)
     invitation_code = models.CharField(max_length=20, null=False, blank=False, unique=True, default=get_invitation_code)
     image = models.ImageField(upload_to='user/image', null=True)
     expire_date = models.DateTimeField(default=get_today)
@@ -132,7 +134,8 @@ class AdvisorRequest(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
     name = models.CharField(max_length=100, null=False)
     phone = models.CharField(max_length=11, null=False, blank=False, )
-
+    grade = models.ForeignKey(Grade, on_delete=models.CASCADE, default=None, null=True)
+    date = models.DateTimeField(default=datetime.datetime.now)
     is_called = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 

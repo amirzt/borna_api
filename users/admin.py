@@ -16,7 +16,7 @@ class CustomUserAdmin(admin.ModelAdmin):
 class GradeAdmin(admin.ModelAdmin):
     list_display = ('title',)
     search_fields = ('title__startswith',)
-    fields = ('title',)
+    fields = ('title', 'code')
 
 
 @admin.register(Field)
