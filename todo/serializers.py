@@ -15,7 +15,7 @@ class TaskSerializer(serializers.ModelSerializer):
                     description=self.validated_data['description'],
                     time=self.validated_data['time'],
                     priority=self.validated_data['priority'])
-        task.save()
+
         return task
 
 

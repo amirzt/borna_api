@@ -3,8 +3,11 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
+from curriculum.models import CurriculumItem, CurriculumCategory
+from lessons.models import Lesson
 from todo.models import Task
 from todo.serializers import TaskSerializer, GetTaskSerializer
+from users.models import Student
 
 
 @api_view(['POST'])
@@ -13,7 +16,10 @@ def add_task(request):
     serializer = TaskSerializer(data=request.data,
                                 context={'user': request.user})
     if serializer.is_valid():
-        serializer.save()
+        task = serializer.save()
+        if 'lesson' in request.data:
+            task.lesson = Lesson.objects.get(id=request.data['lesson'])
+            task.save()
         return Response(serializer.data)
     else:
         return Response(serializer.errors)
@@ -49,4 +55,11 @@ def update_task(request):
 
     task.is_done = False if task.is_done else True
     task.save()
+
+    if task.lesson is not None:
+        curriculum = CurriculumItem(student=Student.objects.get(user=request.user),
+                                    category=CurriculumCategory.objects.all().first(),
+                                    lesson=task.lesson,
+                                    date=task.date)
+        curriculum.save()
     return Response(status=status.HTTP_200_OK)
