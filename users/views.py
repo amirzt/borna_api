@@ -54,7 +54,7 @@ def send_otp(otp, phone):
         ],
         "sender": "+983000505",
         # "time": "2025-03-21T09:12:50.824Z",
-        "message": "کد وورد به نرم افزار مشاورسرا \n "+otp+"\n لغو11"
+        "message": "کد وورد به نرم افزار مشاورسرا \n " + otp + "\n لغو11"
     }
     response = requests.post(api_url, headers=headers, data=json.dumps(body))
     print(response)
@@ -91,7 +91,6 @@ def register(request):
 
             token, created = Token.objects.get_or_create(user=user)
 
-
             return Response({
                 'token': token.key,
                 'exist': False
@@ -113,7 +112,7 @@ def check_otp(request):
 def get_student_code(grade):
     chars = '1234567890'
     random_code = get_random_string(length=4, allowed_chars=chars)
-    code = "402"+grade+random_code
+    code = "402" + grade + random_code
     return code
 
 
@@ -129,6 +128,11 @@ def add_student(request):
 
         user.is_active = True
         user.save()
+
+        if 'university' in request.data:
+            target = UniversityTarget(student=student,
+                                      university_id=request.data['university'])
+            target.save()
 
         token, created = Token.objects.get_or_create(user=user)
 
@@ -168,7 +172,7 @@ def update_student_info(request):
 
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
+@permission_classes([AllowAny])
 def get_universities(request):
     universities = University.objects.all()
     return Response(UniversitySerializer(universities, many=True).data)
