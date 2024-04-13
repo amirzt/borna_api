@@ -9,6 +9,6 @@ class LeagueItem(models.Model):
     date = models.DateField()
     rank = models.IntegerField()
     score = models.FloatField()
-    time = models.TimeField()
+    time = models.CharField(max_length=10, default='')
     question = models.IntegerField(default=0)
     test = models.IntegerField(default=0)

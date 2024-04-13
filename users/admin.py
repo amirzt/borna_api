@@ -16,7 +16,7 @@ class CustomUserAdmin(admin.ModelAdmin):
 class GradeAdmin(admin.ModelAdmin):
     list_display = ('title',)
     search_fields = ('title__startswith',)
-    fields = ('title', 'code')
+    fields = ('title', 'code', 'max_time', 'max_question', 'max_test', 'test_score')
 
 
 @admin.register(Field)
@@ -67,7 +67,7 @@ class AdvisorAdmin(admin.ModelAdmin):
     list_display = ('name', 'phone', 'is_called', 'created_at')
     search_fields = ('name__startswith',)
     list_filter = ('is_called',)
-    fields = ('student', 'name', 'phone', 'is_called',)
+    fields = ('student', 'name', 'phone', 'is_called', 'grade')
 
 
 admin.site.register(OTP)

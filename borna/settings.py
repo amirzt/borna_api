@@ -6,7 +6,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-qmo1e0#$%q0j0s2k5j9n22cay1=+e$k$fe74)%8yfw$7zn&5$x'
 
 DEBUG = True
-DATA_UPLOAD_MAX_MEMORY_SIZE = 1000 * 1024 * 1024
+DATA_UPLOAD_MAX_MEMORY_SIZE = 1000000 * 1024 * 1024
 
 ALLOWED_HOSTS = ['127.0.0.1',
                  'localhost', '45.139.10.179']
