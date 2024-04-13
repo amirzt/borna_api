@@ -29,7 +29,8 @@ INSTALLED_APPS = [
     'curriculum',
     'todo',
     'league',
-    'support'
+    'support',
+    'import_export'
 ]
 
 MIDDLEWARE = [

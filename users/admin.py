@@ -1,7 +1,10 @@
 from django.contrib import admin
+from import_export.admin import ImportExportModelAdmin
 
 from users.models import CustomUser, Grade, Field, City, Student, Banner, TutorialVideo, AdvisorRequest, University, \
     OTP, Wallet
+from import_export import resources
+from django.contrib.auth.models import Group
 
 
 @admin.register(CustomUser)
@@ -33,12 +36,22 @@ class CityAdmin(admin.ModelAdmin):
     fields = ('title',)
 
 
-@admin.register(Student)
-class StudentAdmin(admin.ModelAdmin):
+class StudentResource(resources.ModelResource):
+    class Meta:
+        model = Student
+        fields = ['user__phone', 'first_name', 'last_name', 'student_code', 'grade__title', 'city__title', 'invitation_code', 'expire_date']
+
+
+class StudentAdmin(ImportExportModelAdmin):
+    resource_classes = [StudentResource]
+
     list_display = ('user', 'first_name', 'last_name', 'grade')
     list_filter = ('grade', 'city')
     search_fields = ('user__phone__startswith', 'first_name__startswith', 'last_name__startswith')
     fields = ('user', 'first_name', 'last_name', 'student_code', 'grade', 'city', 'invitation_code', 'expire_date')
+
+
+admin.site.register(Student, StudentAdmin)
 
 
 @admin.register(Banner)
@@ -70,5 +83,8 @@ class AdvisorAdmin(admin.ModelAdmin):
     fields = ('student', 'name', 'phone', 'is_called', 'grade')
 
 
-admin.site.register(OTP)
+# admin.site.register(OTP)
 admin.site.register(Wallet)
+
+admin.site.unregister(Group)
+# admin.site.unregister(Token)

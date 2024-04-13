@@ -15,7 +15,7 @@ class Ticket(models.Model):
     class State(models.TextChoices):
         CLOSED = 'closed', 'Closed'
         IN_PROGRESS = 'in_progress'
-        Answered = 'answered'
+        # Answered = 'answered'
 
     category = models.ForeignKey(TicketCategory, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
