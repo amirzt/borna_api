@@ -105,7 +105,7 @@ def verify(request):
                 # save reservation
 
                 transaction.tracking_code = req.json()['data']['ref_id']
-                transaction.stage = Transaction.Status.SUCCESS
+                transaction.status = Transaction.Status.SUCCESS
                 transaction.save()
 
                 # add credit

@@ -41,20 +41,21 @@ def get_city(request):
 
 
 def send_otp(otp, phone):
-    api_url = "https://api2.ippanel.com/api/v1/sms/webservice/single"
+    api_url = "https://api2.ippanel.com/api/v1/sms/pattern/normal/send"
 
     headers = {
         'Content-Type': 'application/json',
-        'apikey': 'Bearer M-o-KUXHu_VfZgtr6dzrptzXjq0GFeZcoT5pV2PCc34='
+        'apikey': 'M-o-KUXHu_VfZgtr6dzrptzXjq0GFeZcoT5pV2PCc34='
     }
 
     body = {
-        "recipient": [
-            phone
-        ],
-        "sender": "+983000505",
+        "recipient": phone,
+        "sender": "3000505",
         # "time": "2025-03-21T09:12:50.824Z",
-        "message": "کد وورد به نرم افزار مشاورسرا \n " + otp + "\n لغو11"
+        "code": "snad47rjhgnpalm",
+        "variable": {
+            "code": otp
+        }
     }
     response = requests.post(api_url, headers=headers, data=json.dumps(body))
     print(response)
@@ -101,9 +102,9 @@ def register(request):
 
 
 @api_view(['POST'])
-@permission_classes([IsAuthenticated])
+@permission_classes([AllowAny])
 def check_otp(request):
-    otp = OTP.objects.filter(user=request.user).last()
+    otp = OTP.objects.filter(user__phone=request.data['phone']).last()
     if otp.code == request.data['code']:
         return Response(status=status.HTTP_200_OK)
     return Response(status=status.HTTP_400_BAD_REQUEST)

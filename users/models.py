@@ -78,7 +78,7 @@ def get_invitation_code():
 
 def get_otp():
     chars = '0123456789'
-    code = get_random_string(length=6, allowed_chars=chars)
+    code = get_random_string(length=4, allowed_chars=chars)
     return code
 
 
