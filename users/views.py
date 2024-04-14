@@ -75,10 +75,19 @@ def register(request):
         otp.save()
         send_otp(otp.code, user.phone)
 
-        return Response({
-            'token': token.key,
-            'exist': True
-        }, status=200)
+        try:
+            Student.objects.get(user=user)
+
+            return Response({
+                'token': token.key,
+                'exist': True
+            }, status=200)
+
+        except Student.DoesNotExist:
+            return Response({
+                'token': token.key,
+                'exist': False
+            }, status=200)
 
     except CustomUser.DoesNotExist:
         user_serializer = CustomUserSerializer(data=request.data)

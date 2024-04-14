@@ -21,12 +21,12 @@ class GradeAdmin(admin.ModelAdmin):
     search_fields = ('title__startswith',)
     fields = ('title', 'code', 'max_time', 'max_question', 'max_test', 'test_score')
 
-
-@admin.register(Field)
-class FieldAdmin(admin.ModelAdmin):
-    list_display = ('title',)
-    search_fields = ('title__startswith',)
-    fields = ('title',)
+#
+# @admin.register(Field)
+# class FieldAdmin(admin.ModelAdmin):
+#     list_display = ('title',)
+#     search_fields = ('title__startswith',)
+#     fields = ('title',)
 
 
 @admin.register(City)
