@@ -22,7 +22,7 @@ ZP_API_REQUEST = "https://api.zarinpal.com/pg/v4/payment/request.json"
 ZP_API_VERIFY = "https://api.zarinpal.com/pg/v4/payment/verify.json"
 ZP_API_STARTPAY = "https://www.zarinpal.com/pg/StartPay/{authority}"
 
-CallbackURL = 'http://130.185.76.253/api/shop/verify/'
+CallbackURL = 'https://api.moshaversara.com/api/shop/verify/'
 
 
 @api_view(['POST'])

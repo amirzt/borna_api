@@ -197,13 +197,13 @@ def add_target(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def get_home(request):
-    banner = Banner.objects.filter(is_active=True).last()
+    banner = Banner.objects.filter(is_active=True)
     tutorial = TutorialVideo.objects.filter().last()
     student = Student.objects.get(user=request.user)
     target = UniversityTarget.objects.filter(student__user=request.user).last().university
 
     data = {
-        'banner': BannerSerializer(banner).data,
+        'banners': BannerSerializer(banner, many=True).data,
         'tutorial': TutorialSerializer(tutorial).data,
         'student': GetStudentInfoSerializer(student).data,
         'target': UniversitySerializer(target).data
