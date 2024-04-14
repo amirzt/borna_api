@@ -15,9 +15,9 @@ class CustomUserAdmin(admin.ModelAdmin):
 @admin.register(Content)
 class CustomUserAdmin(admin.ModelAdmin):
     list_display = ('title',)
-    list_filter = ('category',)
+    list_filter = ('category', 'type', 'orientation')
     search_fields = ('title__startswith',)
-    fields = ('category', 'type', 'title', 'subtitle', 'description', 'preview_image', 'content', )
+    fields = ('category', 'type', 'orientation', 'title', 'subtitle', 'description', 'preview_image', 'content',)
 
 
 @admin.register(Exam)

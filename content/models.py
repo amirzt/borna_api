@@ -20,6 +20,10 @@ class Content(models.Model):
         VIDEO = 'video'
         AUDIO = 'audio'
 
+    class OrientationChoices(models.TextChoices):
+        portrait = 'portrait'
+        landscape = 'landscape'
+
     type = models.CharField(max_length=100, blank=False, null=False, default=TypeChoices.VIDEO,
                             choices=TypeChoices.choices)
     category = models.ForeignKey(ContentCategory, on_delete=models.CASCADE)
@@ -28,6 +32,8 @@ class Content(models.Model):
     description = models.TextField(max_length=500, null=True, blank=True)
     preview_image = models.ImageField(upload_to='content/preview', blank=True, null=True, )
     content = models.FileField(upload_to='content/file', blank=True, null=True)
+    orientation = models.CharField(choices=OrientationChoices.choices, default=OrientationChoices.landscape,
+                                   max_length=30)
 
     def __str__(self):
         return self.title
