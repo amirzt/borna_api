@@ -3,6 +3,7 @@ from rest_framework.urls import path
 from users import views
 
 urlpatterns = [
+    path('splash/', views.splash, name='splash'),
     path('grade/', views.get_grade, name='grade'),
     path('field/', views.get_field, name='field'),
     path('city/', views.get_city, name='city'),

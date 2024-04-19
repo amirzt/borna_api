@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime, timedelta
 
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
@@ -83,7 +83,7 @@ def get_otp():
 
 
 def get_today():
-    return datetime.datetime.now()
+    return datetime.now() + timedelta(days=90)
 
 
 class Student(models.Model):
@@ -139,7 +139,7 @@ class AdvisorRequest(models.Model):
     name = models.CharField(max_length=100, null=False)
     phone = models.CharField(max_length=11, null=False, blank=False, )
     grade = models.ForeignKey(Grade, on_delete=models.CASCADE, default=None, null=True)
-    date = models.DateTimeField(default=datetime.datetime.now)
+    date = models.DateTimeField(default=datetime.now)
     is_called = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 

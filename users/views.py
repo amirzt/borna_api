@@ -9,7 +9,7 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 
 from users.models import Grade, Field, City, Student, Banner, TutorialVideo, University, UniversityTarget, CustomUser, \
-    OTP
+    OTP, Wallet
 from users.serializers import GradeSerializer, FieldSerializer, CitySerializer, CustomUserSerializer, StudentSerializer, \
     GetStudentInfoSerializer, UniversitySerializer, BannerSerializer, TutorialSerializer, AddAdvisorRequest
 
@@ -144,6 +144,17 @@ def add_student(request):
                                       university_id=request.data['university'])
             target.save()
 
+        if 'invitation_code' in request.data:
+            invitor = Student.objects.get(invitation_code=request.data['invitation_code'])
+
+            wallet1 = Wallet.objects.get(student=invitor)
+            wallet1.balance += 500000
+            wallet1.save()
+
+            wallet2 = Wallet.objects.get(student=student)
+            wallet2.balance += 500000
+            wallet2.save()
+
         token, created = Token.objects.get_or_create(user=user)
 
         return Response({
@@ -177,6 +188,16 @@ def update_student_info(request):
         student.city = City.objects.get(id=request.data['city'])
     if 'image' in request.data:
         student.image = request.data['image']
+    if 'university' in request.data:
+        try:
+            target = UniversityTarget.objects.get(student=student)
+            target.university = University.objects.get(id=request.data['university'])
+            target.save()
+        except UniversityTarget.DoesNotExist:
+            target = UniversityTarget(student=student,
+                                      university_id=request.data['university'])
+            target.save()
+
     student.save()
     return Response(status=200)
 
@@ -230,3 +251,9 @@ def advisor_request(request):
         return Response(serializer.data)
     else:
         return Response(serializer.errors)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def splash(request):
+    return Response(status=status.HTTP_200_OK)
