@@ -46,6 +46,8 @@ MIDDLEWARE = [
 
 CORS_ALLOWED_ORIGINS = [
     "https://web.moshaversara.com",
+    'http://localhost',
+    "http://127.0.0.1"
 ]
 
 ROOT_URLCONF = 'borna.urls'

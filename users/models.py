@@ -122,11 +122,17 @@ class TutorialVideo(models.Model):
     title = models.CharField(max_length=200, null=False, blank=False)
     description = models.TextField(max_length=1000, blank=True)
 
+    def __str__(self):
+        return self.title
+
 
 class University(models.Model):
     name = models.TextField(max_length=100, null=False, blank=False)
     logo = models.ImageField(upload_to='university')
     url = models.URLField(null=False)
+
+    def __str__(self):
+        return self.name
 
 
 class UniversityTarget(models.Model):
@@ -142,6 +148,9 @@ class AdvisorRequest(models.Model):
     date = models.DateTimeField(default=datetime.now)
     is_called = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.student
 
 
 class OTP(models.Model):

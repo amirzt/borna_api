@@ -2,7 +2,7 @@ from django.db import models
 
 # Create your models here.
 from lessons.models import Lesson
-from users.models import Grade, Field
+from users.models import Grade, Field, Student
 
 
 class ContentCategory(models.Model):
@@ -10,6 +10,8 @@ class ContentCategory(models.Model):
     description = models.TextField(max_length=500, blank=False, null=False)
     image = models.ImageField(upload_to='content/category', blank=True, null=True)
     is_special = models.BooleanField(default=False)
+    is_free = models.BooleanField(default=True)
+    price = models.IntegerField(default=0)
 
     def __str__(self):
         return self.name
@@ -51,3 +53,10 @@ class Exam(models.Model):
     title = models.CharField(max_length=100, null=False, blank=False)
     subtitle = models.CharField(max_length=100, null=False, blank=False)
     file = models.FileField(upload_to='content/exam', blank=True, null=True)
+
+
+class ContentAccess(models.Model):
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    category = models.ForeignKey(ContentCategory, on_delete=models.CASCADE)
+
+    created_at = models.DateTimeField(auto_now_add=True)

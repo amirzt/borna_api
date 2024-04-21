@@ -21,7 +21,7 @@ class CustomUserAdmin(admin.ModelAdmin):
 
 class MessageInline(admin.TabularInline):
     model = Message
-    extra = 0
+    # extra = 0
 
 
 @admin.register(Ticket)

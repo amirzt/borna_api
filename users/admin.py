@@ -54,11 +54,12 @@ class StudentAdmin(ImportExportModelAdmin):
 admin.site.register(Student, StudentAdmin)
 
 
-@admin.register(Banner)
-class BannerAdmin(admin.ModelAdmin):
-    list_display = ('image', 'url', 'is_active',)
-    # search_fields = ('title__startswith',)
-    fields = ('image', 'url', 'is_active',)
+admin.site.register(Banner)
+# @admin.register(Banner)
+# class BannerAdmin(admin.ModelAdmin):
+#     list_display = ('image', 'url', 'is_active',)
+#     # search_fields = ('title__startswith',)
+#     fields = ('image', 'url', 'is_active',)
 
 
 @admin.register(TutorialVideo)
