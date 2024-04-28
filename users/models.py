@@ -41,6 +41,7 @@ class Grade(models.Model):
     title = models.CharField(max_length=30, blank=False)
     code = models.CharField(max_length=3, default='', null=False)
     max_time = models.FloatField(default=0)
+    end_week_max_time = models.FloatField(default=0)
     max_test = models.IntegerField(default=0)
     max_question = models.IntegerField(default=0)
     test_score = models.FloatField(default=0)

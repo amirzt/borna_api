@@ -19,7 +19,8 @@ class CustomUserAdmin(admin.ModelAdmin):
 class GradeAdmin(admin.ModelAdmin):
     list_display = ('title',)
     search_fields = ('title__startswith',)
-    fields = ('title', 'code', 'max_time', 'max_question', 'max_test', 'test_score')
+    fields = ('title', 'code', 'max_time', 'end_week_max_time', 'max_question', 'max_test', 'test_score')
+
 
 #
 # @admin.register(Field)
@@ -39,7 +40,8 @@ class CityAdmin(admin.ModelAdmin):
 class StudentResource(resources.ModelResource):
     class Meta:
         model = Student
-        fields = ['user__phone', 'first_name', 'last_name', 'student_code', 'grade__title', 'city__title', 'invitation_code', 'expire_date']
+        fields = ['user__phone', 'first_name', 'last_name', 'student_code', 'grade__title', 'city__title',
+                  'invitation_code', 'expire_date']
 
 
 class StudentAdmin(ImportExportModelAdmin):
@@ -53,8 +55,9 @@ class StudentAdmin(ImportExportModelAdmin):
 
 admin.site.register(Student, StudentAdmin)
 
-
 admin.site.register(Banner)
+
+
 # @admin.register(Banner)
 # class BannerAdmin(admin.ModelAdmin):
 #     list_display = ('image', 'url', 'is_active',)

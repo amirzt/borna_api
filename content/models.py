@@ -12,6 +12,7 @@ class ContentCategory(models.Model):
     is_special = models.BooleanField(default=False)
     is_free = models.BooleanField(default=True)
     price = models.IntegerField(default=0)
+    is_clone = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name

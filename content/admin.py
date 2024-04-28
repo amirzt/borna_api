@@ -9,7 +9,7 @@ class CustomUserAdmin(admin.ModelAdmin):
     list_display = ('name',)
     # list_filter = ('app_type', 'version')
     search_fields = ('name__startswith',)
-    fields = ('name', 'description', 'image', 'is_special', 'is_free', 'price')
+    fields = ('name', 'description', 'image', 'is_special', 'is_free', 'price', 'is_clone')
 
 
 @admin.register(Content)

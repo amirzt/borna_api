@@ -1,4 +1,4 @@
-from django.db.models import Sum, Avg
+from django.db.models import Sum
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
@@ -6,6 +6,7 @@ from rest_framework.response import Response
 
 from curriculum.models import CurriculumCategory, CurriculumItem
 from curriculum.serializers import GetCategoriesSerializer, AddCurriculumSerializer, GetCurriculumSerializer
+from league.calculation import calculate_score
 from league.models import LeagueItem
 from users.models import Student
 
@@ -25,6 +26,7 @@ def add_curriculum(request):
                                          context={'student': Student.objects.get(user=request.user)})
     if serializer.is_valid():
         serializer.save()
+        calculate_score(Student.objects.get(user=request.user))
         return Response(serializer.data)
     return Response(serializer.errors)
 
