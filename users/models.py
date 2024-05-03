@@ -101,7 +101,7 @@ class Student(models.Model):
     expire_date = models.DateTimeField(default=get_today)
 
     def __str__(self):
-        return self.first_name + ' ' + self.last_name + "-" + self.grade.title
+        return self.first_name
 
 
 class Wallet(models.Model):
