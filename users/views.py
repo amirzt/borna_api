@@ -228,7 +228,8 @@ def add_target(request):
 @permission_classes([IsAuthenticated])
 def get_home(request):
     banner = Banner.objects.filter(is_active=True)
-    tutorial = TutorialVideo.objects.filter().last()
+    tutorial = TutorialVideo.objects.filter().first()
+    habit = TutorialVideo.objects.filter().last()
     student = Student.objects.get(user=request.user)
     target = UniversityTarget.objects.filter(student__user=request.user).last().university
 
@@ -236,7 +237,8 @@ def get_home(request):
         'banners': BannerSerializer(banner, many=True).data,
         'tutorial': TutorialSerializer(tutorial).data,
         'student': GetStudentInfoSerializer(student).data,
-        'target': UniversitySerializer(target).data
+        'target': UniversitySerializer(target).data,
+        'habit': TutorialSerializer(habit).data
     }
     return Response(data=data, status=status.HTTP_200_OK)
 
