@@ -158,3 +158,39 @@ class OTP(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     code = models.CharField(max_length=6, null=False, blank=False, default=get_otp)
     created_at = models.DateField(auto_now_add=True)
+
+
+class Advisor(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    name = models.CharField(max_length=100, null=False, blank=False)
+    capacity = models.IntegerField(default=0)
+    field = models.CharField(max_length=100, null=False, blank=False)
+    history = models.CharField(max_length=100, null=False, blank=False)
+    pros = models.CharField(max_length=100, null=False, blank=False)
+
+    bio = models.TextField(max_length=1000, null=False, blank=False)
+    experience = models.TextField(max_length=1000, null=False, blank=False)
+    skills = models.TextField(max_length=1000, null=False, blank=False)
+
+    voice = models.FileField(upload_to='/user/advisor/info')
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+
+class Comment(models.Model):
+    advisor = models.ForeignKey(Advisor, on_delete=models.CASCADE)
+    content = models.TextField(max_length=500, null=False, blank=False)
+    file = models.FileField(upload_to='user/advisor/comment')
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+
+class PartnerShip(models.Model):
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    advisor = models.ForeignKey(Advisor, on_delete=models.CASCADE)
+    start_date = models.DateField()
+    end_date = models.DateField()
+
+    created_at = models.DateTimeField(auto_now_add=True)

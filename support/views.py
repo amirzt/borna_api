@@ -10,5 +10,7 @@ from support.serializers import QuestionsSerializer
 @permission_classes([AllowAny])
 def get_questions(request):
     questions = FrequentlyAskedQuestion.objects.all()
+    if 'type' in request.data:
+        questions = questions.filter(type=request.data['type'])
     serializer = QuestionsSerializer(questions, many=True)
     return Response(serializer.data)

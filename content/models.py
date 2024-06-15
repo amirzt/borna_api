@@ -1,3 +1,5 @@
+import datetime
+
 from django.db import models
 
 # Create your models here.
@@ -14,8 +16,24 @@ class ContentCategory(models.Model):
     price = models.IntegerField(default=0)
     is_clone = models.BooleanField(default=False)
 
+    preview_video = models.FileField(upload_to='content/category', null=True, default=None)
+    preview_image = models.FileField(upload_to='content/category', null=True, default=None)
+    preview_description = models.TextField(max_length=1000, blank=True, null=False, default='')
+
+    discount = models.IntegerField(default=0)
+    discount_expire_date = models.DateTimeField(default=datetime.datetime.now)
+
     def __str__(self):
         return self.name
+
+
+class Chapter(models.Model):
+    category = models.ForeignKey(ContentCategory, on_delete=models.CASCADE)
+    title = models.CharField(max_length=500, null=False, blank=False)
+    description = models.TextField(max_length=1000, null=False, blank=False)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
 
 class Content(models.Model):
@@ -61,3 +79,10 @@ class ContentAccess(models.Model):
     category = models.ForeignKey(ContentCategory, on_delete=models.CASCADE)
 
     created_at = models.DateTimeField(auto_now_add=True)
+
+
+class Comment(models.Model):
+    category = models.ForeignKey(ContentCategory, on_delete=models.CASCADE)
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    content = models.TextField(max_length=1000, null=False, blank=True)
+    file = models.FileField(upload_to='content/comment/')
