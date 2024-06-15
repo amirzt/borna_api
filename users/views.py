@@ -9,9 +9,10 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 
 from users.models import Grade, Field, City, Student, Banner, TutorialVideo, University, UniversityTarget, CustomUser, \
-    OTP, Wallet
+    OTP, Wallet, Advisor, PartnerShip
 from users.serializers import GradeSerializer, FieldSerializer, CitySerializer, CustomUserSerializer, StudentSerializer, \
-    GetStudentInfoSerializer, UniversitySerializer, BannerSerializer, TutorialSerializer, AddAdvisorRequest
+    GetStudentInfoSerializer, UniversitySerializer, BannerSerializer, TutorialSerializer, AddAdvisorRequest, \
+    AdvisorSerializer
 
 import requests
 
@@ -259,3 +260,19 @@ def advisor_request(request):
 @permission_classes([IsAuthenticated])
 def splash(request):
     return Response(status=status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def get_advisors(request):
+    advisors = Advisor.objects.filter(is_active=True)
+
+    return Response(AdvisorSerializer(advisors, many=True).data)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def get_my_students(request):
+    advisor = Advisor.objects.get(user=request.user)
+    students = Student.objects.filter(partnership__advisor=advisor)
+    return Response(GetStudentInfoSerializer(students, many=True).data)

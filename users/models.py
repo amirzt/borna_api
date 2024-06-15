@@ -172,7 +172,8 @@ class Advisor(models.Model):
     experience = models.TextField(max_length=1000, null=False, blank=False)
     skills = models.TextField(max_length=1000, null=False, blank=False)
 
-    voice = models.FileField(upload_to='/user/advisor/info')
+    voice = models.FileField(upload_to='user/advisor/info')
+    is_active = models.BooleanField(default=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

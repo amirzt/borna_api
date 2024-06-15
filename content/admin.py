@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from content.models import ContentCategory, Content, Exam, ContentAccess
+from content.models import ContentCategory, Content, Exam, ContentAccess, Chapter, Comment
 
 
 @admin.register(ContentCategory)
@@ -9,7 +9,24 @@ class CustomUserAdmin(admin.ModelAdmin):
     list_display = ('name',)
     # list_filter = ('app_type', 'version')
     search_fields = ('name__startswith',)
-    fields = ('name', 'description', 'image', 'is_special', 'is_free', 'price', 'is_clone')
+    fields = ('name', 'description', 'image', 'is_special', 'is_free', 'price', 'is_clone',
+              'preview_video', 'preview_image', 'preview_description', 'discount', 'discount_expire_date')
+
+
+@admin.register(Chapter)
+class ChapterAdmin(admin.ModelAdmin):
+    list_display = ('title',)
+    # list_filter = ('app_type', 'version')
+    search_fields = ('title__startswith',)
+    fields = ('title', 'category', 'description',)
+
+
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ('category', 'student')
+    # list_filter = ('app_type', 'version')
+    search_fields = ('title__startswith',)
+    fields = ('student', 'category', 'content', 'file')
 
 
 @admin.register(Content)

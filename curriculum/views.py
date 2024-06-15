@@ -4,11 +4,12 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-from curriculum.models import CurriculumCategory, CurriculumItem
-from curriculum.serializers import GetCategoriesSerializer, AddCurriculumSerializer, GetCurriculumSerializer
+from curriculum.models import CurriculumCategory, CurriculumItem, AdvisorPlan
+from curriculum.serializers import GetCategoriesSerializer, AddCurriculumSerializer, GetCurriculumSerializer, \
+    AddPlanSerializer, GetPlanSerializer
 from league.calculation import calculate_score
 from league.models import LeagueItem
-from users.models import Student
+from users.models import Student, Advisor
 
 
 @api_view(['GET'])
@@ -100,7 +101,7 @@ def total_by_lesson(request):
                                        date__lte=request.data['e1'])
     l1 = LeagueItem.objects.filter(student=Student.objects.get(user=request.user),
                                    date__gte=request.data['s1'],
-                                   date__lte=request.data['e1'],)
+                                   date__lte=request.data['e1'], )
 
     data = {
         'c1': {
@@ -111,3 +112,46 @@ def total_by_lesson(request):
         }
     }
     return Response(data=data)
+
+
+# advisor plans
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def add_plan(request):
+    serializer = AddPlanSerializer(data=request.data,
+                                   context={'student': Student.objects.get(id=request.data['student']),
+                                            'advisor': Advisor.objects.get(user_id=request.user.id)})
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data)
+    return Response(serializer.errors)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def get_plan(request):
+    if 'student' in request.data:
+        items = AdvisorPlan.objects.filter(student=Student.objects.get(id=request.data['student']),
+                                           date=request.data['date'])
+    else:
+        items = AdvisorPlan.objects.filter(student=Student.objects.get(id=request.user),
+                                           date=request.data['date'])
+
+    serializer = GetPlanSerializer(items, many=True)
+    return Response(serializer.data)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def delete_plan(request):
+    id_list = request.data.get('id_list')
+
+    if not id_list:
+        return Response({'error': 'هیچ آیدی ای ارسال نشده است'}, status=status.HTTP_400_BAD_REQUEST)
+
+    try:
+        AdvisorPlan.objects.filter(id__in=id_list).delete()
+    except Exception as e:
+        return Response(status=400, data={'message': str(e)})
+    return Response(status=status.HTTP_200_OK, data={'message': 'با موفقیت حذف شد'})

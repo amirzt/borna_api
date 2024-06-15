@@ -22,6 +22,9 @@ class LeagueGroup(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return self.name
+
 
 class GroupMember(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
@@ -31,4 +34,3 @@ class GroupMember(models.Model):
 
     class Meta:
         unique_together = ('student', 'group')
-

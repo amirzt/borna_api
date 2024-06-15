@@ -7,5 +7,6 @@ urlpatterns = [
     path('get_content/', views.get_content, name='get_content'),
     path('get_exam/', views.get_exam, name='get_exam'),
     path('add_content_access/', views.add_content_access, name='add_content_access'),
+    path('add_comment/', views.add_comment, name='add_comment'),
 
 ]

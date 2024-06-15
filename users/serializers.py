@@ -4,7 +4,7 @@ from rest_framework import serializers
 
 from shop.models import Transaction
 from users.models import CustomUser, Grade, Field, City, Student, Wallet, Banner, TutorialVideo, University, \
-    AdvisorRequest
+    AdvisorRequest, Comment, Advisor
 
 
 class CustomUserSerializer(serializers.ModelSerializer):
@@ -56,7 +56,7 @@ class StudentSerializer(serializers.ModelSerializer):
 
     def save(self, **kwargs):
         student = Student(user=self.context.get('user'),
-                          grade=self.validated_data['grade'],)
+                          grade=self.validated_data['grade'], )
         student.save()
 
         if 'first_name' in self.validated_data:
@@ -102,8 +102,8 @@ class GetStudentInfoSerializer(serializers.ModelSerializer):
     @staticmethod
     def get_advisor(self):
         advisor = AdvisorRequest.objects.filter(student=self)
-        if advisor.count() > 0 :
-            return  advisor.last().date
+        if advisor.count() > 0:
+            return advisor.last().date
         else:
             return ''
 
@@ -143,3 +143,21 @@ class AddAdvisorRequest(serializers.ModelSerializer):
                                  student=Student.objects.get(user=self.context.get('user')))
         request.save()
         return request
+
+
+class CommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = '__all__'
+
+
+class AdvisorSerializer(serializers.ModelSerializer):
+    comments = serializers.SerializerMethodField('get_comments')
+
+    @staticmethod
+    def get_comments(self):
+        return CommentSerializer(Comment.objects.filter(advisor=self), many=True).data
+
+    class Meta:
+        model = Advisor
+        fields = '__all__'

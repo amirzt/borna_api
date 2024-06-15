@@ -18,4 +18,7 @@ urlpatterns = [
     path('add_target/', views.add_target, name='add_target'),
     path('advisor_request/', views.advisor_request, name='advisor_request'),
 
+    path('get_advisors/', views.get_advisors, name='get_advisors'),
+    path('get_my_students/', views.get_my_students, name='get_my_students'),
+
 ]

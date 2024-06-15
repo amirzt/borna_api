@@ -3,7 +3,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-from content.models import ContentCategory, Content, Exam, ContentAccess
+from content.models import ContentCategory, Content, Exam, ContentAccess, Comment
 from content.serializers import ContentCategorySerializer, ContentSerializer, ExamSerializer
 from users.models import Student, Wallet
 
@@ -53,3 +53,14 @@ def add_content_access(request):
         wallet.balance -= category.price
         wallet.save()
         return Response(status=status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def add_comment(request):
+    comment = Comment(category_id=request.data['category'],
+                      content=request.data['content'],
+                      file=request.data['file'],
+                      student=Student.objects.get(user_id=request.user.id))
+    comment.save()
+    return Response(status=status.HTTP_200_OK)

@@ -2,7 +2,7 @@ from django.contrib import admin
 from import_export.admin import ImportExportModelAdmin
 
 from users.models import CustomUser, Grade, Field, City, Student, Banner, TutorialVideo, AdvisorRequest, University, \
-    OTP, Wallet
+    OTP, Wallet, Advisor, Comment, PartnerShip
 from import_export import resources
 from django.contrib.auth.models import Group
 
@@ -91,4 +91,31 @@ class AdvisorAdmin(admin.ModelAdmin):
 admin.site.register(Wallet)
 
 admin.site.unregister(Group)
+
+
 # admin.site.unregister(Token)
+
+
+@admin.register(Advisor)
+class AdvisorAdmin(admin.ModelAdmin):
+    list_display = ('user', 'name')
+    # list_filter = ('app_type', 'version')
+    search_fields = ('name__startswith',)
+    fields = (
+    'user', 'name', 'capacity', 'field', 'history', 'pros', 'bio', 'experience', 'skills', 'voice', 'is_active')
+
+
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ('advisor',)
+    # list_filter = ('app_type', 'version')
+    # search_fields = ('name__startswith',)
+    fields = ('advisor', 'content', 'file')
+
+
+@admin.register(PartnerShip)
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ('advisor', 'student', 'start_date', 'end_date')
+    # list_filter = ('app_type', 'version')
+    # search_fields = ('name__startswith',)
+    fields = ('advisor', 'student', 'start_date', 'end_date')
