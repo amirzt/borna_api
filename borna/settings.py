@@ -30,7 +30,8 @@ INSTALLED_APPS = [
     'league',
     'support',
     'import_export',
-    'corsheaders'
+    'corsheaders',
+    'field'
 ]
 
 MIDDLEWARE = [

@@ -12,4 +12,6 @@ urlpatterns = [
     path('api/users/', include('users.urls')),
     path('api/league/', include('league.urls')),
     path('api/todo/', include('todo.urls')),
+    path('api/field/', include('field.urls')),
+
 ]
