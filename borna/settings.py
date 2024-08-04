@@ -29,7 +29,7 @@ INSTALLED_APPS = [
     'todo',
     'league',
     'support',
-    'import_export',
+    # 'import_export',
     'corsheaders',
     'field'
 ]
